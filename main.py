@@ -30,7 +30,8 @@ def main():
         ["check_win", "check_win",
          "Tells the bot to check if the game is over. Returns 1 if itself has won, -1 if the opponent has won, "
          "0 if the game has not terminated"],
-        ["quit", "quit", "The game is over"]
+        ["quit", "quit", "The game is over"],
+        ["flip", "flip", "Reflects the board (on long axis) and swaps tiles . Utility function for neural network"]
     ]
 
     help_response = "Cmd not recognized. Please refer to known commands below:"

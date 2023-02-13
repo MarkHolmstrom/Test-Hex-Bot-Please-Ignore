@@ -4,6 +4,8 @@ import numpy as np
 
 from constants import EMPTY, WHITE, BLACK
 
+import time
+
 seed(42)  # Get same results temporarily
 
 
@@ -24,7 +26,8 @@ class RandomHexBot:
             "sety": self.sety,
             "unset": self.unset,
             "check_win": self.check_win,
-            "swap": self.swap
+            "swap": self.swap,
+            "flip": self.flip
         }
 
         self.argnums = {
@@ -36,6 +39,7 @@ class RandomHexBot:
             "unset": 1,
             "check_win": 0,
             "swap": 0,
+            "flip": 0
         }
 
     def is_cmd(self, cmd):
@@ -293,4 +297,15 @@ class RandomHexBot:
                 break
         self.move_count += 1
         return
+
+    def flip(self):
+        """Reflects the board (on long axis) and swaps tiles to take advantage of hex's symmetry."""
+        board_2d = np.reshape(self.board, (self.board_size, self.board_size))
+        board_reflect = np.reshape(np.transpose(board_2d), self.board_size ** 2)
+        whites, blacks = board_reflect == WHITE, board_reflect == BLACK
+        board_reflect[whites], board_reflect[blacks] = BLACK, WHITE
+        # self.board = np.select([board_reflect == WHITE, board_reflect == BLACK], [BLACK, WHITE], board_reflect)
+        # commented out is slower in testing
+        self.board = board_reflect
+
 

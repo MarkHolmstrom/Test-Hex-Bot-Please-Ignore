@@ -14,7 +14,7 @@ seed(42)  # Get same results temporarily
 class RandomHexBot:
     def __init__(self, color, board_size=10):  # default board size 10x10
         self.color = color
-        self.opp = BLACK if color == WHITE else WHITE
+        self.opp = color * -1  # CONSTANTS ARE FIXED!!!
         self.move_count = 0
         self.init_board(board_size)
 
@@ -78,7 +78,7 @@ class RandomHexBot:
         """
         board_size = int(board_size)
         self.board_size = board_size
-        self.board = np.full((board_size ** 2), EMPTY)  # changed to numpy array for speed
+        self.board = np.full((board_size ** 2), EMPTY, dtype=np.int8)  # changed to numpy array for speed
         self.move_count = 0
 
         self.init_neighbours()
@@ -287,25 +287,14 @@ class RandomHexBot:
         return row * self.board_size + column
 
     def swap(self):
-        """Swaps the first tile that a player has moved on to the opposite color. No sanity checks."""
-        for i, tile in enumerate(self.board):
-            if tile == WHITE:
-                self.board[i] = BLACK
-                break
-            elif tile == BLACK:
-                self.board[i] = WHITE
-                break
+        """Swaps the tiles on the board and iterates move count. No sanity checks"""
+        self.board *= -1
         self.move_count += 1
         return
 
     def flip(self):
         """Reflects the board (on long axis) and swaps tiles to take advantage of hex's symmetry."""
         board_2d = np.reshape(self.board, (self.board_size, self.board_size))
-        board_reflect = np.reshape(np.transpose(board_2d), self.board_size ** 2)
-        whites, blacks = board_reflect == WHITE, board_reflect == BLACK
-        board_reflect[whites], board_reflect[blacks] = BLACK, WHITE
-        # self.board = np.select([board_reflect == WHITE, board_reflect == BLACK], [BLACK, WHITE], board_reflect)
-        # commented out is slower in testing
-        self.board = board_reflect
+        self.board = np.reshape(np.transpose(board_2d), self.board_size ** 2) * -1
 
 

@@ -1,4 +1,4 @@
-# These can be any numbers we want
+# DO NOT CHANGE!!!
 EMPTY = 0
 WHITE = 1
 BLACK = -1

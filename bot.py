@@ -160,15 +160,14 @@ class RandomHexBot:
     def check_win(self):
         """Checks whether or not the game has come to a close.
 
-        Returns:
+        Prints:
             int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
             are mathematically impossible in Hex.
         """
         seen = set()
 
         def dfs(i, color, level=0):
-            """Oopsie poopsie! I made a fucky wucky! This code is super-duper slow! UwU7
-
+            """
             Args:
                 i (int): The current location of the depth-first search
                 color (int): The current color of the dfs.
@@ -181,7 +180,7 @@ class RandomHexBot:
             elif color == BLACK and is_bottom_row:
                 return True
 
-            # Label hexagon as 'visited' so we don't get infinite recusion
+            # Label hexagon as 'visited' so we don't get infinite recursion
             seen.add(i)
             for neighbour in self.neighbours[i]:
                 if (
@@ -191,12 +190,9 @@ class RandomHexBot:
                 ):
                     return True
 
-            # Remove hexagon so we can examine it again next time (hint:is this needed?)
-            seen.remove(i)
             return False
 
-        # Iterate over all starting spaces for black & white, performing dfs on empty
-        # spaces (hint: this leads to repeated computation!)
+        # Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
         for i in range(0, self.board_size):
             if self.board[i] == BLACK and dfs(i, BLACK):
                 print(1 if self.color == BLACK else -1)

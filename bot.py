@@ -283,10 +283,11 @@ class RandomHexBot:
         return row * self.board_size + column
 
     def swap(self):
-        """Swaps the tiles on the board and iterates move count. No sanity checks"""
-        self.board *= -1
+        """
+        Performs the 'swap' move
+        """
+        self.opp, self.color = self.color, self.opp
         self.move_count += 1
-        return
 
     def flip(self):
         """Reflects the board (on long axis) and swaps tiles to take advantage of hex's symmetry."""

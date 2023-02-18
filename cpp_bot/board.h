@@ -1,15 +1,18 @@
+#ifndef BOARD_H
+#define BOARD_H
 #include <map>
 #include <set>
 #include <vector>
+#include "constants.h"
 using namespace std;
 
 class HexBoard {
     public:
         HexBoard(int color, int board_size = 10);
-        void make_move();
         void init_board(int board_size);
         void show_board();
         void seto(string pos);
+        void sety(int pos);
         void sety(string pos);
         void swap();
         void unset(string pos);
@@ -19,7 +22,6 @@ class HexBoard {
         string coord_to_move(int coord);
         void init_neighbours();
         int move_to_coord(string move);
-        void sety(int pos);
         bool dfs(int i, int color, set<int>& seen);
         int color;
         int opp;
@@ -34,3 +36,4 @@ class HexBoard {
             {BLACK, 'B'}
         };
 };
+#endif

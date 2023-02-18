@@ -1,5 +1,5 @@
-#if !defined(MYLIB_CONSTANTS_H)
-#define MYLIB_CONSTANTS_H 1
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 const int EMPTY = 0;
 const int WHITE = 1;

@@ -39,23 +39,17 @@ void HexBoard::show_board() {
 }
 
 
-void HexBoard::make_move() {
-    // Generates the move. For this bot, the move is randomly selected from all
-    // empty positions.
+// void HexBoard::make_move() {
+//     // Generates the move. For this bot, the move is randomly selected from all
+//     // empty positions.
 
-    vector<int> empties;
-    for (int i = 0; i < this->board_size_2; i++) {
-        if (this->board[i] == EMPTY) {
-            empties.push_back(i);
-        }
-    }
-
-    int coord = empties[rand() % empties.size()];
-    this->sety(coord);
-
-    string move = this->coord_to_move(coord);
-    cout << move << endl;
-}
+//     vector<int> empties;
+//     for (int i = 0; i < this->board_size_2; i++) {
+//         if (this->board[i] == EMPTY) {
+//             empties.push_back(i);
+//         }
+//     }
+// }
 
 void HexBoard::seto(string move) {
     // Tells the bot about a move for the other bot

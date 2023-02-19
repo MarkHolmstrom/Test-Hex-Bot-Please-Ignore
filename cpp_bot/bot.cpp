@@ -131,5 +131,5 @@ void HexBot::make_move() {
     this->play_a(best_a);
     string best_move = this->board.coord_to_move(best_a);
     cout << best_move << endl;
-    cout << "N: " << this->tree->N << endl;
+    // cout << "N: " << this->tree->N << endl;
 }

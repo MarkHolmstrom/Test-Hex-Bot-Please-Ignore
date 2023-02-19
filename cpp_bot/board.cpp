@@ -152,7 +152,6 @@ int HexBoard::check_win() {
 
     for (int i = 0; i < this->board_size_2; i += this->board_size) {
         if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
-            cout << (this->color == WHITE ? 1 : -1) << endl;
             return WHITE;
         }
     }

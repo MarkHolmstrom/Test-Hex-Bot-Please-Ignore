@@ -10,12 +10,12 @@ class HexBot {
     void play_a(int a);
 
    private:
-    int select_a(Node& s);
+    int select_a(Node* s);
     int select_best_a();
     int default_policy();
-    void backup(Node& s, float z);
+    void backup(Node* s, float z);
     int* uct();
-    Node& simtree();
+    Node* simtree();
     float simdefault();
     HexBoard &board;
     int timelimit;

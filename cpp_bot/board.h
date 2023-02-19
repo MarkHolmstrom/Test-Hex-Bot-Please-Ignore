@@ -8,7 +8,7 @@ using namespace std;
 
 class HexBoard {
     public:
-        HexBoard(int color, int board_size = 2);
+        HexBoard(int color, int board_size = 10);
         HexBoard(const HexBoard& board);
         void init_board(int board_size);
         void show_board();

@@ -110,7 +110,6 @@ bool HexBoard::dfs(int i, int color, set<int>& seen) {
                 return true;
             }
         }
-        seen.erase(i);
         return false;
 }
 

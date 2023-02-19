@@ -11,7 +11,7 @@ using namespace std;
 HexBot::HexBot(HexBoard& board, int color) : board(board) {
     this->timelimit = 2000;
     this->tree = new Node(-1, NULL);
-    this->C = 0.4;
+    this->C = sqrt(2);
     this->color = color;
 }
 
@@ -29,7 +29,7 @@ int HexBot::select_best_a() {
 }
 
 int HexBot::select_a(Node* s) {
-    int max_U = -1;
+    int min_U = INT_MAX;
     int best_a = -1;
     for (auto it = s->children.begin(); it != s->children.end(); it++) {
         Node* child = it->second;
@@ -39,9 +39,9 @@ int HexBot::select_a(Node* s) {
         if (child->Q < 0) {
             continue;
         }
-        float U = child->Q + this->C * sqrt(2 * log(s->N) / child->N);
-        if (U > max_U) {
-            max_U = U;
+        float U = child->Q + this->C * sqrt(log(s->N) / child->N);
+        if (U < min_U) {
+            min_U = U;
             best_a = child->a;
         }
     }
@@ -99,12 +99,22 @@ void HexBot::play_a(int a) {
     }
 }
 
+void HexBot::swap() {
+    this->color = -1 * this->color;
+}
+
 void HexBot::make_move() {
     chrono::system_clock sc;
     auto start = sc.now();
     auto end = start + chrono::milliseconds(this->timelimit - 500);
 
     this->board.current = this->color;
+
+    if (this->board.move_count == 1) {
+        this->board.swap();
+        this->swap();
+        return;
+    }
 
     // TODO: replace with stacked based history undo
     HexBoard copy = HexBoard(this->board);

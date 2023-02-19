@@ -11,6 +11,7 @@ HexBoard::HexBoard(int color, int board_size) {
     this->color = color;
     this->opp = -1 * color;
     this->current = BLACK;
+    this->move_count = 0;
     this->init_board(board_size);
 }
 
@@ -18,6 +19,7 @@ HexBoard::HexBoard(const HexBoard& board) {
     this->color = board.color;
     this->opp = board.opp;
     this->current = board.current;
+    this->move_count = board.move_count;
     this->board_size = board.board_size;
     this->board_size_2 = board.board_size_2;
     this->board = vector<int>(this->board_size_2);
@@ -71,6 +73,7 @@ void HexBoard::sety(string move) {
 void HexBoard::play_a(int coord, int color) {
     this->board[coord] = color;
     this->current = -1 * color;
+    this->move_count++;
 }
 
 void HexBoard::unset(string move) {
@@ -215,7 +218,7 @@ int HexBoard::move_to_coord(string move) {
 void HexBoard::swap() {
     // Performs the 'swap' move
     std::swap(this->opp, this->color);
-    // this->move_count++;
+    this->move_count++;
 }
 
 

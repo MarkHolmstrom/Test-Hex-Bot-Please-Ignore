@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
             board.sety(arg);
         } else if (cmd == "swap") {
             board.swap();
+            bot.swap();
         } else if (cmd == "unset") {
             board.unset(arg);
         } else if (cmd == "check_win") {

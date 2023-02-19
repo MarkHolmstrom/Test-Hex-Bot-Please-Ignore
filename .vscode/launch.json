@@ -10,7 +10,7 @@
       "type": "lldb",
       "request": "launch",
       "program": "${workspaceFolder}/cpp_bot/main.out",
-      "args": ["white"],
+      "args": ["black"],
       "cwd": "${fileDirname}",
       "preLaunchTask": "make"
     }

@@ -8,6 +8,7 @@ class HexBot {
     HexBot(HexBoard &board, int color);
     void make_move();
     void play_a(int a);
+    void swap();
 
    private:
     int select_a(Node* s);

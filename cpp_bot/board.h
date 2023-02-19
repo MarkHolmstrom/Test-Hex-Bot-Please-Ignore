@@ -26,12 +26,12 @@ class HexBoard {
         int board_size;
         int board_size_2;
         int current;
+        int move_count;
     private:
         void init_neighbours();
         bool dfs(int i, int color, set<int>& seen);
         int color;
         int opp;
-        int move_count;
         vector<int> board;
         vector<vector<int>> neighbours;
         map<int, char> tile_chars = {

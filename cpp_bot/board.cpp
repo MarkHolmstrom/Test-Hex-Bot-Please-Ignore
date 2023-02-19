@@ -10,15 +10,27 @@ using namespace std;
 HexBoard::HexBoard(int color, int board_size) {
     this->color = color;
     this->opp = -1 * color;
-    this->move_count = 0;
+    this->current = BLACK;
     this->init_board(board_size);
 }
 
+HexBoard::HexBoard(const HexBoard& board) {
+    this->color = board.color;
+    this->opp = board.opp;
+    this->current = board.current;
+    this->board_size = board.board_size;
+    this->board_size_2 = board.board_size_2;
+    this->board = vector<int>(this->board_size_2);
+    for (int i = 0; i < this->board_size_2; i++) {
+        this->board[i] = board.board[i];
+    }
+    this->neighbours = board.neighbours;
+}
 
 void HexBoard::init_board(int board_size) {
     this->board_size = board_size;
     this->board_size_2 = board_size * board_size;
-    this->board = new int[this->board_size_2];
+    this->board = vector<int>(this->board_size_2);
     for (int i = 0; i < this->board_size_2; i++) {
         this->board[i] = EMPTY;
     }
@@ -38,29 +50,14 @@ void HexBoard::show_board() {
     cout << endl;
 }
 
-
-// void HexBoard::make_move() {
-//     // Generates the move. For this bot, the move is randomly selected from all
-//     // empty positions.
-
-//     vector<int> empties;
-//     for (int i = 0; i < this->board_size_2; i++) {
-//         if (this->board[i] == EMPTY) {
-//             empties.push_back(i);
-//         }
-//     }
-// }
-
 void HexBoard::seto(string move) {
     // Tells the bot about a move for the other bot
     //
     // Args:
     //      string move: A human-readable position on which the opponent has just
     // played
-
     int coord = this->move_to_coord(move);
-    this->board[coord] = this->opp;
-    this->move_count += 1;
+    this->play_a(coord, this->opp);
 }
 
 void HexBoard::sety(string move) {
@@ -68,16 +65,12 @@ void HexBoard::sety(string move) {
     // Args:
     //      string move: A human-readable position on the board
     int coord = this->move_to_coord(move);
-    this->board[coord] = this->color;
-    this->move_count += 1;
+    this->play_a(coord, this->color);
 }
 
-void HexBoard::sety(int coord) {
-    // Set Your [tile]. Tells the bot to play a move for itself
-    // Args:
-    //      int coord: A position on the board
-    this->board[coord] = this->color;
-    this->move_count += 1;
+void HexBoard::play_a(int coord, int color) {
+    this->board[coord] = color;
+    this->current = -1 * color;
 }
 
 void HexBoard::unset(string move) {
@@ -118,7 +111,7 @@ bool HexBoard::dfs(int i, int color, set<int>& seen) {
         return false;
 }
 
-void HexBoard::check_win() {
+void HexBoard::print_win() {
     // Checks whether or not the game has come to a close.
     // Prints:
     // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
@@ -141,6 +134,30 @@ void HexBoard::check_win() {
     }
 
     cout << 0 << endl;
+}
+
+int HexBoard::check_win() {
+    // Checks whether or not the game has come to a close.
+    // Prints:
+    // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
+    // are mathematically impossible in Hex.
+    set<int> seen;
+
+    // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
+    for (int i = 0; i < this->board_size; i++) {
+        if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
+            return BLACK;
+        }
+    }
+
+    for (int i = 0; i < this->board_size_2; i += this->board_size) {
+        if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
+            cout << (this->color == WHITE ? 1 : -1) << endl;
+            return WHITE;
+        }
+    }
+
+    return EMPTY;
 }
 
 void HexBoard::init_neighbours() {
@@ -199,7 +216,7 @@ int HexBoard::move_to_coord(string move) {
 void HexBoard::swap() {
     // Performs the 'swap' move
     std::swap(this->opp, this->color);
-    this->move_count++;
+    // this->move_count++;
 }
 
 
@@ -209,4 +226,13 @@ void HexBoard::flip() {
     //         board_2d = np.reshape(self.board, (self.this->board_size, self.this->board_size))
     //         self.board = np.reshape(np.transpose(board_2d), self.this->board_size ** 2) * -1
     // TODO
+}
+
+bool HexBoard::is_legal(int coord) {
+    // Checks whether or not a move is legal
+    // Args:
+    //     int coord: A coordinate within this->board
+    // Returns:
+    //     bool: True if the move is legal, false otherwise
+    return this->board[coord] == EMPTY;
 }

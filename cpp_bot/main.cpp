@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     int color = arg_color == "white" ? WHITE : BLACK;
 
     HexBoard board = HexBoard(color);
-    HexBot bot = HexBot(board);
+    HexBot bot = HexBot(board, color);
 
     string line;
     while (getline(cin, line) && line != "quit") {
@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
             board.show_board();
         } else if (cmd == "seto") {
             board.seto(arg);
+            bot.play_a(board.move_to_coord(arg));
         } else if (cmd == "sety") {
             board.sety(arg);
         } else if (cmd == "swap") {
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
         } else if (cmd == "unset") {
             board.unset(arg);
         } else if (cmd == "check_win") {
-            board.check_win();
+            board.print_win();
         } else if (cmd == "flip") {
             board.flip();
         }

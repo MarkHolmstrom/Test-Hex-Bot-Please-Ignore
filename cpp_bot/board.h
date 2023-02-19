@@ -8,27 +8,31 @@ using namespace std;
 
 class HexBoard {
     public:
-        HexBoard(int color, int board_size = 10);
+        HexBoard(int color, int board_size = 2);
+        HexBoard(const HexBoard& board);
         void init_board(int board_size);
         void show_board();
         void seto(string pos);
-        void sety(int pos);
+        void play_a(int coord, int color);
         void sety(string pos);
         void swap();
         void unset(string pos);
-        void check_win();
+        int check_win();
+        void print_win();
         void flip();
-    private:
+        bool is_legal(int coord);
         string coord_to_move(int coord);
-        void init_neighbours();
         int move_to_coord(string move);
+        int board_size;
+        int board_size_2;
+        int current;
+    private:
+        void init_neighbours();
         bool dfs(int i, int color, set<int>& seen);
         int color;
         int opp;
         int move_count;
-        int board_size;
-        int board_size_2;
-        int* board;
+        vector<int> board;
         vector<vector<int>> neighbours;
         map<int, char> tile_chars = {
             {EMPTY, '.'},

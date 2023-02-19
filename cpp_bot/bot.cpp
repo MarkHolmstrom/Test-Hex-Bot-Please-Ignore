@@ -9,7 +9,8 @@
 using namespace std;
 
 HexBot::HexBot(HexBoard& board, int color) : board(board) {
-    this->timelimit = 2000;
+    this->timelimit = 90000 - 500;
+    // this->timelimit = 5000 - 500;
     this->tree = new Node(-1, NULL);
     this->C = sqrt(2);
     this->color = color;
@@ -29,19 +30,19 @@ int HexBot::select_best_a() {
 }
 
 int HexBot::select_a(Node* s) {
-    int min_U = INT_MAX;
+    float max_U = 0;
     int best_a = -1;
     for (auto it = s->children.begin(); it != s->children.end(); it++) {
         Node* child = it->second;
         if (child->N == 0) {
             return child->a;
         }
-        if (child->Q < 0) {
+        if (child->Q == -1) {
             continue;
         }
         float U = child->Q + this->C * sqrt(log(s->N) / child->N);
-        if (U < min_U) {
-            min_U = U;
+        if (U > max_U) {
+            max_U = U;
             best_a = child->a;
         }
     }
@@ -78,7 +79,7 @@ float HexBot::simdefault() {
         int coord = this->default_policy();
         winner = this->board.check_win();
     }
-    return winner == player;
+    return 1 - (winner == player);
 }
 
 void HexBot::backup(Node* s, float z) {
@@ -106,7 +107,7 @@ void HexBot::swap() {
 void HexBot::make_move() {
     chrono::system_clock sc;
     auto start = sc.now();
-    auto end = start + chrono::milliseconds(this->timelimit - 500);
+    auto end = start + chrono::milliseconds(this->timelimit);
 
     this->board.current = this->color;
 
@@ -130,4 +131,5 @@ void HexBot::make_move() {
     this->play_a(best_a);
     string best_move = this->board.coord_to_move(best_a);
     cout << best_move << endl;
+    cout << "N: " << this->tree->N << endl;
 }

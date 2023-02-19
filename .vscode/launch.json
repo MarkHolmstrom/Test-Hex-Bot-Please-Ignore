@@ -4,15 +4,15 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
       "name": "(lldb) Launch",
       "type": "lldb",
       "request": "launch",
       "program": "${workspaceFolder}/cpp_bot/main.out",
       "args": ["black"],
-      "cwd": "${fileDirname}",
-      "preLaunchTask": "make"
+      "preLaunchTask": "make",
+      "console": "integratedTerminal",
+      "stdio": "${workspaceFolder}/cpp_bot/test.in"
     }
   ]
 }

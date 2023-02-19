@@ -4,6 +4,9 @@
 		{
 			"type": "shell",
 			"label": "make",
+			"presentation": {
+				"clear": true
+			},
 			"command": "make",
 			"options": {
         "cwd": "${workspaceFolder}/cpp_bot"

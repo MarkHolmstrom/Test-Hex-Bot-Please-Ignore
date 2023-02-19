@@ -9,7 +9,7 @@
       "type": "lldb",
       "request": "launch",
       "program": "${workspaceFolder}/cpp_bot/main.out",
-      "args": ["black"],
+      "args": ["white"],
       "preLaunchTask": "make",
       "console": "integratedTerminal",
       "stdio": "${workspaceFolder}/cpp_bot/test.in"

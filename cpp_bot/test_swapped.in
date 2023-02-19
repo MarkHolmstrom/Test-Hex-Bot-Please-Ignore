@@ -1,0 +1,13 @@
+init_board 3
+seto a2
+show_board
+swap
+show_board
+seto a1
+show_board
+sety b2
+show_board
+seto c3
+show_board
+make_move
+show_board

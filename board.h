@@ -10,19 +10,19 @@ using namespace std;
 
 class HexBoard {
     public:
-        HexBoard(int color, int board_size = 10);
-        void init_board(int board_size);
+        HexBoard(const int& color, const int& board_size = 10);
+        void init_board(const int& board_size);
         void show_board();
         void seto(const string& pos);
-        void play_a(int coord, int color);
+        void play_a(const int& coord, const int& color);
         void sety(const string& pos);
         void swap();
         void unset(const string& pos);
         int check_win();
         void print_win();
         void flip();
-        bool is_legal(int coord) const;
-        string coord_to_move(int coord);
+        bool is_legal(const int& coord) const;
+        string coord_to_move(const int& coord);
         int move_to_coord(const string& move);
         void empty_history();
         void undo_history();

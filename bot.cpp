@@ -9,7 +9,7 @@
 
 using namespace std;
 
-HexBot::HexBot(HexBoard& board, int color) : board(board) {
+HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
     this->timelimit = 90000 - 500;
     this->timelimit = 3500 - 500;
     this->tree = new Node(-1, NULL);
@@ -88,7 +88,7 @@ void HexBot::backup(Node* s, float z) {
     }
 }
 
-void HexBot::play_a(int a) {
+void HexBot::play_a(const int& a) {
     if (this->tree->children.count(a)) {
         this->tree = this->tree->children[a];
         this->tree->parent = NULL;

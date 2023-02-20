@@ -8,9 +8,9 @@ using namespace std;
 
 class UnionFind {
 public:
-  void insert(int v);
+  void insert(const int& v);
   int find(int u);
-  void unionize(int u, int v);
+  void unionize(const int& u, const int& v);
   void empty_history();
   void undo_history();
 

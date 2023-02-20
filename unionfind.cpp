@@ -1,7 +1,7 @@
 #include "unionfind.h"
 #include <cassert>
 
-void UnionFind::insert(int v) {
+void UnionFind::insert(const int& v) {
   if (parent.find(v) != parent.end()) return;
   parent[v] = v;
   rank[v] = 0;
@@ -14,7 +14,7 @@ int UnionFind::find(int v) {
   return v;
 }
 
-void UnionFind::unionize(int u, int v) {
+void UnionFind::unionize(const int& u, const int& v) {
   int rep_u = find(u), rep_v = find(v);
 
   if (rep_u == rep_v) {

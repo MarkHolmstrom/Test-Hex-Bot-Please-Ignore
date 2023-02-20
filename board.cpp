@@ -7,7 +7,7 @@
 
 using namespace std;
 
-HexBoard::HexBoard(int color, int board_size) {
+HexBoard::HexBoard(const int& color, const int& board_size) {
     this->color = color;
     this->opp = -1 * color;
     this->current = BLACK;
@@ -17,7 +17,7 @@ HexBoard::HexBoard(int color, int board_size) {
 }
 
 
-void HexBoard::init_board(int board_size) {
+void HexBoard::init_board(const int& board_size) {
     this->board_size = board_size;
     this->board_size_2 = board_size * board_size;
     this->board = vector<int>(this->board_size_2);
@@ -66,7 +66,7 @@ void HexBoard::sety(const string& move) {
     this->play_a(coord, this->color);
 }
 
-void HexBoard::play_a(int coord, int color) {
+void HexBoard::play_a(const int& coord, const int& color) {
     this->board[coord] = color;
     this->empties.erase(coord);
     for (int neighbour : this->neighbours[coord]) {
@@ -154,7 +154,7 @@ void HexBoard::init_neighbours() {
     }
 }
 
-string HexBoard::coord_to_move(int coord) {
+string HexBoard::coord_to_move(const int& coord) {
     // Converts an integer coordinate to a human-readable move
     // Args:
     //    int coord: A coordinate within this->board
@@ -194,7 +194,7 @@ void HexBoard::flip() {
     // TODO
 }
 
-bool HexBoard::is_legal(int coord) const {
+bool HexBoard::is_legal(const int& coord) const {
     // Checks whether or not a move is legal
     // Args:
     //     int coord: A coordinate within this->board

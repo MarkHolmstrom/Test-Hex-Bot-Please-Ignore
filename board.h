@@ -30,6 +30,7 @@ class HexBoard {
         int board_size_2;
         int current;
         int move_count;
+        unordered_set<int> empties;
     private:
         void init_neighbours();
         bool dfs(int i, int color, unordered_set<int>& seen);

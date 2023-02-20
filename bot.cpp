@@ -52,11 +52,7 @@ int HexBot::select_a(Node* s) {
 
 int HexBot::default_policy() {
     vector<int> empties;
-    for (int i = 0; i < this->board.board_size_2; i++) {
-        if (this->board.is_legal(i)) {
-            empties.push_back(i);
-        }
-    }
+    empties.insert(empties.end(), this->board.empties.begin(), this->board.empties.end());
     int coord = empties[rand() % empties.size()];
     this->board.play_a(coord, this->board.current);
     return coord;

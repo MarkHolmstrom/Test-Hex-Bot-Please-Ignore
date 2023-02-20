@@ -36,6 +36,7 @@ void HexBoard::init_board(int board_size) {
     this->board = vector<int>(this->board_size_2);
     for (int i = 0; i < this->board_size_2; i++) {
         this->board[i] = EMPTY;
+        this->empties.insert(i);
     }
     this->init_neighbours();
 }
@@ -73,6 +74,7 @@ void HexBoard::sety(const string& move) {
 
 void HexBoard::play_a(int coord, int color) {
     this->board[coord] = color;
+    this->empties.erase(coord);
     this->current = -1 * color;
     this->move_count++;
 }
@@ -252,8 +254,9 @@ void HexBoard::empty_history() {
 
 void HexBoard::undo_history() {
     while (!this->history.empty()) {
-         int move = this->history.top();
+        int move = this->history.top();
         this->history.pop();
+        this->empties.insert(move);
         this->board[move] = EMPTY;
         this->move_count--;
         this->current = -1 * color;

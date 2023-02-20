@@ -21,9 +21,7 @@ void Node::expand(const HexBoard& board) {
         return;
     }
     this->expanded = true;
-    for (int a = 0; a < board.board_size_2; a++) {
-        if (board.is_legal(a)) {
-            this->children[a] = new Node(a, this);
-        }
+    for (int a : board.empties) {
+        this->children[a] = new Node(a, this);
     }
 }

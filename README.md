@@ -1,10 +1,8 @@
-TODO:
-a lot
+## How to build
 
-COMPLETED:
+Run `make` in the root directory of the repo to generate the program executable `main.out`.
 
-* ~~Barebones~~ Slightly better test suite. Run `python3 test_suite.py` in `central_program` directory of UAIS repo.
-* Rewrite dfs for speed (visited set monotonically increases)
-* Fixing constants to current values, benefits for data type foreknowledge and faster computation (e.g. multiply by -1 to flip colors)
-* Add swap rule
-* Use numpy
+## How to test
+
+Move `test_suite.py` from the root directory of the repo into the `central_program` directory of UAIS repo and run it there with `python3 test_suite.py`. 
+The `-h` option provides usage information

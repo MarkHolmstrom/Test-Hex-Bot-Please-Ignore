@@ -16,7 +16,7 @@ Node::~Node() {
     }
 }
 
-void Node::expand(HexBoard board) {
+void Node::expand(const HexBoard& board) {
     if (this->expanded) {
         return;
     }

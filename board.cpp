@@ -53,7 +53,7 @@ void HexBoard::show_board() {
     cout << endl;
 }
 
-void HexBoard::seto(string move) {
+void HexBoard::seto(const string& move) {
     // Tells the bot about a move for the other bot
     //
     // Args:
@@ -63,7 +63,7 @@ void HexBoard::seto(string move) {
     this->play_a(coord, this->opp);
 }
 
-void HexBoard::sety(string move) {
+void HexBoard::sety(const string& move) {
     // Set Your [tile]. Tells the bot to play a move for itself
     // Args:
     //      string move: A human-readable position on the board
@@ -77,7 +77,7 @@ void HexBoard::play_a(int coord, int color) {
     this->move_count++;
 }
 
-void HexBoard::unset(string move) {
+void HexBoard::unset(const string& move) {
     // Tells the bot to set a tile as unused
     // Args:
     //      string move: A human-readable position on the board
@@ -208,7 +208,7 @@ string HexBoard::coord_to_move(int coord) {
     return move;
 }
 
-int HexBoard::move_to_coord(string move) {
+int HexBoard::move_to_coord(const string& move) {
     // Converts a human-readable move to a coordinate within this->board
     // Args:
     //    string move: A human-readable position on the board
@@ -236,7 +236,7 @@ void HexBoard::flip() {
     // TODO
 }
 
-bool HexBoard::is_legal(int coord) {
+bool HexBoard::is_legal(int coord) const {
     // Checks whether or not a move is legal
     // Args:
     //     int coord: A coordinate within this->board

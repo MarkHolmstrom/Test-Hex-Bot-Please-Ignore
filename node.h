@@ -7,7 +7,7 @@ class Node {
    public:
     Node(int a, Node* parent);
     ~Node();
-    void expand(HexBoard board);
+    void expand(const HexBoard& board);
     Node* parent;
     float N;
     float Q;

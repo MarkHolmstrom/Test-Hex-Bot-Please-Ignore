@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include <map>
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <stack>
 #include "constants.h"
@@ -32,13 +32,13 @@ class HexBoard {
         int move_count;
     private:
         void init_neighbours();
-        bool dfs(int i, int color, set<int>& seen);
+        bool dfs(int i, int color, unordered_set<int>& seen);
         int color;
         int opp;
         stack<int> history;
         vector<int> board;
         vector<vector<int>> neighbours;
-        map<int, char> tile_chars = {
+        unordered_map<int, char> tile_chars = {
             {EMPTY, '.'},
             {WHITE, 'W'},
             {BLACK, 'B'}

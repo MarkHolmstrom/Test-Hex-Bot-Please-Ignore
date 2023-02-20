@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include "board.h"
+#include <unordered_map>
 
 class Node {
    public:
@@ -11,7 +12,7 @@ class Node {
     float N;
     float Q;
     int a;
-    map<int, Node*> children;
+    unordered_map<int, Node*> children;
     bool expanded;
 };
 #endif

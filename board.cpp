@@ -2,7 +2,6 @@
 #include "constants.h"
 #include "board.h"
 #include <iostream>
-#include <set>
 #include <vector>
 
 using namespace std;
@@ -86,7 +85,7 @@ void HexBoard::unset(string move) {
     this->board[coord] = EMPTY;
 }
 
-bool HexBoard::dfs(int i, int color, set<int>& seen) {
+bool HexBoard::dfs(int i, int color, unordered_set<int>& seen) {
         // Args:
         //     int i: The current location of the depth-first search
         //     int color: The current color of the dfs.
@@ -120,7 +119,7 @@ void HexBoard::print_win() {
     // Prints:
     // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
     // are mathematically impossible in Hex.
-    set<int> seen;
+    unordered_set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
     if (this->current == BLACK) {
@@ -148,23 +147,23 @@ int HexBoard::check_win() {
     // Prints:
     // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
     // are mathematically impossible in Hex.
-    set<int> seen;
+    unordered_set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    if (this->current == BLACK) {
+    // if (this->current == BLACK) {
         for (int i = 0; i < this->board_size; i++) {
             if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
                 return BLACK;
             }
         }
-    }
-    else {
+    // }
+    // else {
         for (int i = 0; i < this->board_size_2; i += this->board_size) {
             if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
                 return WHITE;
             }
         }
-    }
+    // }
 
     return EMPTY;
 }

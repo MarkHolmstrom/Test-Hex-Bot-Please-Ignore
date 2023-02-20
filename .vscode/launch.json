@@ -8,11 +8,11 @@
       "name": "(lldb) Launch",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/cpp_bot/main.out",
-      "args": ["white"],
+      "program": "${workspaceFolder}/main.out",
+      "args": ["black"],
       "preLaunchTask": "make",
       "console": "integratedTerminal",
-      "stdio": "${workspaceFolder}/cpp_bot/test.in"
+      "stdio": "${workspaceFolder}/test_n.in"
     }
   ]
 }

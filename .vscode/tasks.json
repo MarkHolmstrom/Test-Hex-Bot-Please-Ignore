@@ -9,7 +9,7 @@
 			},
 			"command": "make",
 			"options": {
-        "cwd": "${workspaceFolder}/cpp_bot"
+        "cwd": "${workspaceFolder}"
     	},
 		}
 	]

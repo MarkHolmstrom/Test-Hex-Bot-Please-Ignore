@@ -121,17 +121,20 @@ void HexBoard::print_win() {
     set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    for (int i = 0; i < this->board_size; i++) {
-        if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
-            cout << (this->color == BLACK ? 1 : -1) << endl;
-            return;
+    if (this->current == BLACK) {
+        for (int i = 0; i < this->board_size; i++) {
+            if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
+                cout << (this->color == BLACK ? 1 : -1) << endl;
+                return;
+            }
         }
     }
-
-    for (int i = 0; i < this->board_size_2; i += this->board_size) {
-        if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
-            cout << (this->color == WHITE ? 1 : -1) << endl;
-            return;
+    else {
+        for (int i = 0; i < this->board_size_2; i += this->board_size) {
+            if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
+                cout << (this->color == WHITE ? 1 : -1) << endl;
+                return;
+            }
         }
     }
 
@@ -146,15 +149,18 @@ int HexBoard::check_win() {
     set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    for (int i = 0; i < this->board_size; i++) {
-        if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
-            return BLACK;
+    if (this->current == BLACK) {
+        for (int i = 0; i < this->board_size; i++) {
+            if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
+                return BLACK;
+            }
         }
     }
-
-    for (int i = 0; i < this->board_size_2; i += this->board_size) {
-        if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
-            return WHITE;
+    else {
+        for (int i = 0; i < this->board_size_2; i += this->board_size) {
+            if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
+                return WHITE;
+            }
         }
     }
 

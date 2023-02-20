@@ -124,7 +124,7 @@ void HexBoard::print_win() {
     unordered_set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    if (this->current != BLACK) {
+    if (this->current == BLACK) {
         for (int i = 0; i < this->board_size; i++) {
             if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
                 cout << (this->color == BLACK ? 1 : -1) << endl;
@@ -152,20 +152,20 @@ int HexBoard::check_win() {
     unordered_set<int> seen;
 
     // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    if (this->current != BLACK) {
+    // if (this->current == BLACK) {
         for (int i = 0; i < this->board_size; i++) {
             if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
                 return BLACK;
             }
         }
-    }
-    else {
+    // }
+    // else {
         for (int i = 0; i < this->board_size_2; i += this->board_size) {
             if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
                 return WHITE;
             }
         }
-    }
+    // }
 
     return EMPTY;
 }

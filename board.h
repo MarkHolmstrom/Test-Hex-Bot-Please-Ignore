@@ -5,12 +5,12 @@
 #include <vector>
 #include <stack>
 #include "constants.h"
+#include "unionfind.h"
 using namespace std;
 
 class HexBoard {
     public:
         HexBoard(int color, int board_size = 10);
-        HexBoard(const HexBoard& board);
         void init_board(int board_size);
         void show_board();
         void seto(const string& pos);
@@ -33,7 +33,6 @@ class HexBoard {
         unordered_set<int> empties;
     private:
         void init_neighbours();
-        bool dfs(int i, int color, unordered_set<int>& seen);
         int color;
         int opp;
         stack<int> history;
@@ -44,5 +43,6 @@ class HexBoard {
             {WHITE, 'W'},
             {BLACK, 'B'}
         };
+        UnionFind uf;
 };
 #endif

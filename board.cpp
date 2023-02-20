@@ -1,6 +1,7 @@
 
 #include "constants.h"
 #include "board.h"
+#include "unionfind.h"
 #include <iostream>
 #include <vector>
 
@@ -15,29 +16,22 @@ HexBoard::HexBoard(int color, int board_size) {
     this->init_board(board_size);
 }
 
-HexBoard::HexBoard(const HexBoard& board) {
-    this->color = board.color;
-    this->opp = board.opp;
-    this->current = board.current;
-    this->move_count = board.move_count;
-    this->board_size = board.board_size;
-    this->board_size_2 = board.board_size_2;
-    this->board = vector<int>(this->board_size_2);
-    for (int i = 0; i < this->board_size_2; i++) {
-        this->board[i] = board.board[i];
-    }
-    this->history = stack<int>(board.history);
-    this->neighbours = board.neighbours;
-}
 
 void HexBoard::init_board(int board_size) {
     this->board_size = board_size;
     this->board_size_2 = board_size * board_size;
     this->board = vector<int>(this->board_size_2);
+    this->empties = unordered_set<int>();
+    this->uf = UnionFind();
     for (int i = 0; i < this->board_size_2; i++) {
         this->board[i] = EMPTY;
         this->empties.insert(i);
+        this->uf.insert(i);
     }
+    this->uf.insert(LEFT);
+    this->uf.insert(RIGHT);
+    this->uf.insert(TOP);
+    this->uf.insert(BOTTOM);
     this->init_neighbours();
 }
 
@@ -75,6 +69,11 @@ void HexBoard::sety(const string& move) {
 void HexBoard::play_a(int coord, int color) {
     this->board[coord] = color;
     this->empties.erase(coord);
+    for (int neighbour : this->neighbours[coord]) {
+        if (neighbour < 0 || this->board[neighbour] == color) {
+            this->uf.unionize(coord, neighbour);
+        }
+    }
     this->current = -1 * color;
     this->move_count++;
 }
@@ -87,86 +86,33 @@ void HexBoard::unset(const string& move) {
     this->board[coord] = EMPTY;
 }
 
-bool HexBoard::dfs(int i, int color, unordered_set<int>& seen) {
-        // Args:
-        //     int i: The current location of the depth-first search
-        //     int color: The current color of the dfs.
-        bool is_right_column = (i + 1) % this->board_size == 0;
-
-        if (color == WHITE && is_right_column) {
-            return true;
-        }
-
-        bool is_bottom_row = i >= this->board_size * (this->board_size - 1);
-        if (color == BLACK && is_bottom_row) {
-            return true;
-        }
-
-        // Label hexagon as 'visited' so we don't get infinite recursion
-        seen.insert(i);
-        for (int neighbour : this->neighbours[i]) {
-            if (
-                seen.find(neighbour) == seen.end() &&
-                this->board[neighbour] == color &&
-                this->dfs(neighbour, color, seen)
-            ) {
-                return true;
-            }
-        }
-        return false;
-}
-
 void HexBoard::print_win() {
     // Checks whether or not the game has come to a close.
     // Prints:
-    // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
-    // are mathematically impossible in Hex.
-    unordered_set<int> seen;
+    // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise.
+    // Note that draws are mathematically impossible in Hex.
+    int winner = this->check_win();
 
-    // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    if (this->current == BLACK) {
-        for (int i = 0; i < this->board_size; i++) {
-            if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
-                cout << (this->color == BLACK ? 1 : -1) << endl;
-                return;
-            }
-        }
+    if (winner == 0) {
+        cout << 0 << endl;
+    } else {
+        cout << (this->color == winner ? 1 : -1) << endl;
     }
-    else {
-        for (int i = 0; i < this->board_size_2; i += this->board_size) {
-            if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
-                cout << (this->color == WHITE ? 1 : -1) << endl;
-                return;
-            }
-        }
-    }
-
-    cout << 0 << endl;
 }
 
 int HexBoard::check_win() {
     // Checks whether or not the game has come to a close.
-    // Prints:
-    // int: 1 if this bot has won, -1 if the opponent has won, and 0 otherwise. Note that draws
-    // are mathematically impossible in Hex.
-    unordered_set<int> seen;
-
-    // Iterate over all starting spaces for black & white, performing dfs on non-empty spaces
-    // if (this->current == BLACK) {
-        for (int i = 0; i < this->board_size; i++) {
-            if (this->board[i] == BLACK && dfs(i, BLACK, seen)) {
-                return BLACK;
-            }
-        }
-    // }
-    // else {
-        for (int i = 0; i < this->board_size_2; i += this->board_size) {
-            if (this->board[i] == WHITE && dfs(i, WHITE, seen)) {
-                return WHITE;
-            }
-        }
-    // }
-
+    // Returns:
+    // int: EMPTY if the game is not over, else the winner, BLACK or WHITE.
+    if (this->move_count < this->board_size) {
+        return EMPTY;
+    }
+    if (this->uf.find(TOP) == this->uf.find(BOTTOM)) {
+        return BLACK;
+    }
+    if (this->uf.find(LEFT) == this->uf.find(RIGHT)) {
+        return WHITE;
+    }
     return EMPTY;
 }
 
@@ -189,14 +135,24 @@ void HexBoard::init_neighbours() {
 
         vector<int> neighbours;
         for (int offset : *offsets) {
-            if (0 <= cell + offset && cell + offset < this->board_size_2) {
-                neighbours.push_back(cell + offset);
+            int neighbour = cell + offset;
+            if (0 <= neighbour && neighbour < this->board_size_2) {
+                neighbours.push_back(neighbour);
             }
+        }
+        if (cell < this->board_size) {
+            neighbours.push_back(TOP);
+        } else if (cell >= this->board_size_2 - this->board_size) {
+            neighbours.push_back(BOTTOM);
+        }
+        if (cell % this->board_size == 0) {
+            neighbours.push_back(LEFT);
+        } else if ((cell + 1) % this->board_size == 0) {
+            neighbours.push_back(RIGHT);
         }
         this->neighbours.push_back(neighbours);
     }
 }
-
 
 string HexBoard::coord_to_move(int coord) {
     // Converts an integer coordinate to a human-readable move
@@ -249,7 +205,10 @@ bool HexBoard::is_legal(int coord) const {
 
 
 void HexBoard::empty_history() {
-    this->history.empty();
+    while (!this->history.empty()) {
+        this->history.pop();
+    }
+    this->uf.empty_history();
 }
 
 void HexBoard::undo_history() {
@@ -261,4 +220,5 @@ void HexBoard::undo_history() {
         this->move_count--;
         this->current = -1 * color;
     }
+    this->uf.undo_history();
 }

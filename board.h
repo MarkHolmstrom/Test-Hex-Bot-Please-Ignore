@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <stack>
 #include "constants.h"
 using namespace std;
 
@@ -23,6 +24,8 @@ class HexBoard {
         bool is_legal(int coord);
         string coord_to_move(int coord);
         int move_to_coord(string move);
+        void empty_history();
+        void undo_history();
         int board_size;
         int board_size_2;
         int current;
@@ -32,6 +35,7 @@ class HexBoard {
         bool dfs(int i, int color, set<int>& seen);
         int color;
         int opp;
+        stack<int> history;
         vector<int> board;
         vector<vector<int>> neighbours;
         map<int, char> tile_chars = {

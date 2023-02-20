@@ -77,7 +77,7 @@ float HexBot::simdefault() {
     int player = this->board.current;
     int winner = this->board.check_win();
     while (winner == EMPTY) {
-        int coord = this->default_policy();
+        this->default_policy();
         winner = this->board.check_win();
     }
     return 1 - (winner == player);
@@ -119,13 +119,12 @@ void HexBot::make_move() {
         return;
     }
 
-    // TODO: replace with stacked based history undo
-    HexBoard copy = HexBoard(this->board);
+    this->board.empty_history();
     do {
         Node* s = this->simtree();
         int z = this->simdefault();
         this->backup(s, z);
-        this->board = HexBoard(copy);
+        this->board.undo_history();
     } while (sc.now() < end);
 
     int best_a = this->select_best_a();

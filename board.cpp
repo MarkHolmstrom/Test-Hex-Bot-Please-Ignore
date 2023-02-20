@@ -12,6 +12,7 @@ HexBoard::HexBoard(int color, int board_size) {
     this->opp = -1 * color;
     this->current = BLACK;
     this->move_count = 0;
+    this->history = stack<int>();
     this->init_board(board_size);
 }
 
@@ -26,6 +27,7 @@ HexBoard::HexBoard(const HexBoard& board) {
     for (int i = 0; i < this->board_size_2; i++) {
         this->board[i] = board.board[i];
     }
+    this->history = stack<int>(board.history);
     this->neighbours = board.neighbours;
 }
 
@@ -242,4 +244,19 @@ bool HexBoard::is_legal(int coord) {
     // Returns:
     //     bool: True if the move is legal, false otherwise
     return this->board[coord] == EMPTY;
+}
+
+
+void HexBoard::empty_history() {
+    this->history.empty();
+}
+
+void HexBoard::undo_history() {
+    while (!this->history.empty()) {
+         int move = this->history.top();
+        this->history.pop();
+        this->board[move] = EMPTY;
+        this->move_count--;
+        this->current = -1 * color;
+    }
 }

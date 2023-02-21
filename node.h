@@ -5,13 +5,11 @@
 
 class Node {
    public:
-    Node(int a, Node* parent);
-    ~Node();
+    Node(Node* parent);
     void expand(const HexBoard& board);
     Node* parent;
     float N;
     float Q;
-    int a;
     unordered_map<int, Node*> children;
     bool expanded;
 };

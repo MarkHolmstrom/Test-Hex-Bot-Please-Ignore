@@ -12,7 +12,7 @@ using namespace std;
 HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
     this->timelimit = 90000 - 500;
     this->timelimit = 3500 - 500;
-    this->tree = new Node(-1, NULL);
+    this->tree = new Node(NULL);
     this->C = sqrt(2);
     this->color = color;
 }
@@ -20,11 +20,12 @@ HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
 int HexBot::select_best_a() {
     int max_N = -1;
     int best_a = -1;
-    for (auto it = this->tree->children.begin(); it != this->tree->children.end(); it++) {
-        Node* child = it->second;
-        if (child->expanded && child->N > max_N) {
+    for (const auto& kv : this->tree->children) {
+        Node* child = kv.second;
+        if (child->N > max_N) {
             max_N = child->N;
-            best_a = child->a;
+            int a = kv.first;
+            best_a = a;
         }
     }
     return best_a;
@@ -33,18 +34,16 @@ int HexBot::select_best_a() {
 int HexBot::select_a(Node* s) {
     float max_U = 0;
     int best_a = -1;
-    for (auto it = s->children.begin(); it != s->children.end(); it++) {
-        Node* child = it->second;
+    for (const auto& kv : s->children) {
+        Node* child = kv.second;
+        int a = kv.first;
         if (child->N == 0) {
-            return child->a;
-        }
-        if (child->Q == -1) {
-            continue;
+            return a;
         }
         float U = child->Q + this->C * sqrt(log(s->N) / child->N);
         if (U > max_U) {
             max_U = U;
-            best_a = child->a;
+            best_a = a;
         }
     }
     return best_a;
@@ -93,7 +92,7 @@ void HexBot::play_a(const int& a) {
         this->tree = this->tree->children[a];
         this->tree->parent = NULL;
     } else {
-        this->tree = new Node(-1, NULL);
+        this->tree = new Node(NULL);
     }
 }
 

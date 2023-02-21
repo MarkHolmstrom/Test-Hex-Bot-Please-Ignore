@@ -107,11 +107,15 @@ void HexBot::make_move() {
 
     this->board.current = this->color;
 
-    if (this->board.move_count == 1) {
-        this->board.swap();
-        this->swap();
-        cout << "swap" << endl;
-        return;
+    if (this->board.move_count == 1 && this->board.board_size == 10) {  // handcrafted strategy for 10x10 board swaps
+        for (int i = 0; i < this->board.board_size_2; i++) {
+            if (this->board.empties.find(i) == this->board.empties.end() && i == 9) {  // should swap if first player chooses a10 only
+                this->board.swap();
+                this->swap();
+                cout << "swap" << endl;
+                return;
+            }
+        }
     }
 
     this->board.empty_history();

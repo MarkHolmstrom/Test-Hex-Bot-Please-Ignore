@@ -1,17 +1,13 @@
 #include "bot.h"
-#include "constants.h"
 
 #include <chrono>
 #include <cmath>
 #include <iostream>
 #include <climits>
-#include <random>
 
+#include "constants.h"
 
 using namespace std;
-
-static default_random_engine rng = default_random_engine(0);
-
 
 HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
     this->timelimit = 90000 - 500;
@@ -53,6 +49,14 @@ int HexBot::select_a(Node* s) {
     return best_a;
 }
 
+int HexBot::default_policy() {
+    vector<int> empties;
+    empties.insert(empties.end(), this->board.empties.begin(), this->board.empties.end());
+    int coord = empties[rand() % empties.size()];
+    this->board.play_a(coord, this->board.current);
+    return coord;
+}
+
 Node* HexBot::simtree() {
     Node* s = this->tree;
     while (s->children.size() > 0) {
@@ -65,14 +69,12 @@ Node* HexBot::simtree() {
 }
 
 float HexBot::simdefault() {
-    vector<int> empties;
-    empties.insert(empties.end(), this->board.empties.begin(), this->board.empties.end());
-    shuffle(empties.begin(), empties.end(), rng);
     int player = this->board.current;
-    for (int& empty : empties) {
-        this->board.play_a(empty, this->board.current);
-    }
     int winner = this->board.check_win();
+    while (winner == EMPTY) {
+        this->default_policy();
+        winner = this->board.check_win();
+    }
     return winner != player;
 }
 

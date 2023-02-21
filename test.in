@@ -1,4 +1,2 @@
 init_board 3
-seto b1
-seto b3
 make_move

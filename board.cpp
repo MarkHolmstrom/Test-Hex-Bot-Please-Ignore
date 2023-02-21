@@ -71,7 +71,11 @@ void HexBoard::play_a(const int& coord, const int& color) {
     this->history.push(coord);
     this->empties.erase(coord);
     for (int neighbour : this->neighbours[coord]) {
-        if (neighbour < 0 || this->board[neighbour] == color) {
+        if (this->board[neighbour] == color) {
+            this->uf.unionize(coord, neighbour);
+        } else if (color == BLACK && (neighbour == TOP || neighbour == BOTTOM)) {
+            this->uf.unionize(coord, neighbour);
+        } else if (color == WHITE && (neighbour == LEFT || neighbour == RIGHT)) {
             this->uf.unionize(coord, neighbour);
         }
     }

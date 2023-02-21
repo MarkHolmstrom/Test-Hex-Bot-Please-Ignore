@@ -23,17 +23,17 @@ void UnionFind::unionize(const int& u, const int& v) {
 
   if (rank[rep_u] < rank[rep_v]) {
     parent[rep_u] = rep_v;
-    parent_history.push(rep_v);
+    parent_history.push(rep_u);
     rank_history.push(rank[rep_v]);
   }
   else if (rank[rep_u] > rank[rep_v]) {
     parent[rep_v] = rep_u;
-    parent_history.push(rep_u);
+    parent_history.push(rep_v);
     rank_history.push(rank[rep_u]);
   }
   else {
     parent[rep_u] = rep_v;
-    parent_history.push(rep_v);
+    parent_history.push(rep_u);
     rank_history.push(rank[rep_v]);
     rank[rep_v]++;
   }

@@ -68,6 +68,7 @@ void HexBoard::sety(const string& move) {
 
 void HexBoard::play_a(const int& coord, const int& color) {
     this->board[coord] = color;
+    this->history.push(coord);
     this->empties.erase(coord);
     for (int neighbour : this->neighbours[coord]) {
         if (neighbour < 0 || this->board[neighbour] == color) {

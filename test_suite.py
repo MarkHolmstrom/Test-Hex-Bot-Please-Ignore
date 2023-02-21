@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Script for testing bots. Note that wins are reported as original player,
-e.g. if swap happens and "Black" wins, it counts as a win for White.
+Script for testing bots. Error handling is lazy, if something breaks then it'll probably break immediately.
 """
 import argparse
 import multiprocessing
@@ -11,8 +10,8 @@ import time
 
 RUST_PREAMBLE = "cargo run --bin central_controller --release -- matchup"
 BOARD_SIZE = 10
-BLACK_PATH = "../../hexbot/cpp_bot/main.out"
-WHITE_PATH = "../../hexbot/cpp_bot/main.out"
+BLACK_PATH = "../../hexbot/main.out"
+WHITE_PATH = "../../hexbot/main.out"
 RUN_TIME_SECS = 20
 
 
@@ -27,6 +26,10 @@ def play_games(args, black_wins, white_wins, start_time, run_time):
 
         p.stdin.write("run " + str(BOARD_SIZE ** 2 + 1))  # swap move and fill board
         p.stdin.close()
+        for line in p.stderr:  # stderr has a bunch of rust warnings
+            if "thread 'main' panicked" in line:
+                print(line)
+                return
 
         swap = 0
         for line in p.stdout:
@@ -51,7 +54,7 @@ def main():
     parser.add_argument('-s', default=BOARD_SIZE,
                         help="Board size (side length)")
     parser.add_argument('-t', default=RUN_TIME_SECS,
-                        help="Run time (seconds), script will not start new games after this time has elapsed")
+                        help="Run time (seconds, total), script will wait for games to finish")
     parser.add_argument('-l', default="",
                         help="Log path (will log win counts to path)")
 
@@ -80,3 +83,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

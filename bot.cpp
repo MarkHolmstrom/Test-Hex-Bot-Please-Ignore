@@ -11,7 +11,7 @@ using namespace std;
 
 HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
     this->timelimit = 90000 - 500;
-    // this->timelimit = 3500 - 500;
+    this->timelimit = 3500 - 500;
     this->tree = new Node(NULL);
     this->C = sqrt(2);
     this->color = color;
@@ -21,9 +21,9 @@ int HexBot::select_best_a() {
     int max_N = -1;
     int best_a = -1;
     for (const auto& kv : this->tree->children) {
-        Node* child = kv.second;
-        if (child->N > max_N) {
-            max_N = child->N;
+        const Node& child = kv.second;
+        if (child.N > max_N) {
+            max_N = child.N;
             int a = kv.first;
             best_a = a;
         }
@@ -121,7 +121,7 @@ void HexBot::make_move() {
     this->board.empty_history();
     do {
         Node* s = this->simtree();
-        int z = this->simdefault();
+        float z = this->simdefault();
         this->backup(s, z);
         this->board.undo_history();
     } while (sc.now() < end);
@@ -131,5 +131,5 @@ void HexBot::make_move() {
     this->play_a(best_a);
     string best_move = this->board.coord_to_move(best_a);
     cout << best_move << endl;
-    // cout << "N: " << this->tree->N << endl;
+    cout << "N: " << this->tree->N << endl;
 }

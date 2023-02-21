@@ -21,9 +21,9 @@ int HexBot::select_best_a() {
     int max_N = -1;
     int best_a = -1;
     for (const auto& kv : this->tree->children) {
-        const Node& child = kv.second;
-        if (child.N > max_N) {
-            max_N = child.N;
+        Node* child = kv.second;
+        if (child->N > max_N) {
+            max_N = child->N;
             int a = kv.first;
             best_a = a;
         }

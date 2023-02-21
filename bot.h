@@ -13,7 +13,6 @@ class HexBot {
    private:
     int select_a(Node* s);
     int select_best_a();
-    int default_policy();
     void backup(Node* s, float z);
     Node* simtree();
     float simdefault();

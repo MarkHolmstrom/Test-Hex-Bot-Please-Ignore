@@ -13,7 +13,7 @@ HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
     this->timelimit = 90000 - 500;
     // this->timelimit = 3500 - 500;
     this->tree = new Node(NULL);
-    this->C = sqrt(2);
+    this->C = 0.4;
     this->color = color;
 }
 

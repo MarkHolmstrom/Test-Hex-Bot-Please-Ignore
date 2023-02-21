@@ -109,7 +109,7 @@ void HexBot::make_move() {
 
     if (this->board.move_count < 2 && this->board.board_size == 10) {  // handcrafted strategy for 10x10 board swaps
         
-        if (this->board.move_count == 0) { // hardcoded turn 0 b3/c2
+        if (this->board.move_count == 0 && this->board.current == BLACK) { // hardcoded turn 0 b3/c2
             int best_a = this->board.board_size + 2;
             this->board.play_a(best_a, this->color);
             this->play_a(best_a);
@@ -118,7 +118,7 @@ void HexBot::make_move() {
             //cout << "N: " << this->tree->N << endl;
             return;
         }
-        else { // hardcoded turn 1 swap (conditional)
+        else if (this->board.move_count == 1 && this->board.current == WHITE){ // hardcoded turn 1 swap (conditional)
         for (int i = 0; i < this->board.board_size_2; i++) {
             if (this->board.empties.find(i) == this->board.empties.end() && (i == 9 || i == 18 || i == 19 || i == 21 || i == 22 || i == 23 || i == 24 || i == 25 || i == 26 || i == 27 || i == 28 || i == 30 || i == 31 || i == 32 || i == 33 || i == 34 || i == 35 || i == 36 || i == 37 || i == 38 || i == 39 || i == 40 || i == 41 || i == 42 || i == 43 || i == 44 || i == 45 || i == 46 || i == 47 || i == 48 || i == 49 || i == 50 || i == 51 || i == 52 || i == 53 || i == 54 || i == 55 || i == 56 || i == 57 || i == 58 || i == 59 || i == 60 || i == 61 || i == 62 || i == 63 || i == 64 || i == 65 || i == 66 || i == 67 || i == 68 || i == 69 || i == 71 || i == 72 || i == 73 || i == 74 || i == 75 || i == 76 || i == 77 || i == 78 || i == 80 || i == 81 || i == 90)) {  // I'm something of a programmer myself
                 this->board.swap();

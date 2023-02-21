@@ -10,8 +10,8 @@
 using namespace std;
 
 HexBot::HexBot(HexBoard& board, const int& color) : board(board) {
-    this->timelimit = 90000 - 500;
-    this->timelimit = 3500 - 500;
+    this->timelimit = 90000 - 250;
+    this->timelimit = 3500 - 250;
     this->tree = new Node(-1, NULL);
     this->C = sqrt(2);
     this->color = color;
